@@ -1,0 +1,101 @@
+{% extends "main.html" %}
+{% block title %}ExpertAI{% endblock title %}
+{% block content %}
+    <main class="flex-1 p-8 bg-gray-50 min-h-screen overflow-x-auto mt-5">
+        <!-- <h2 class="text-2xl font-semibold mb-4">Formulário</h2> -->
+      
+        <form class="bg-white p-6 shadow rounded-md" action="{% url 'xlsmaker:generate-spreadsheet' %}"
+            method="post">
+            {% csrf_token %}
+            <div class="mb-4 bg-gray-100">
+                <span>
+                    Olá! Sou uma inteligência artificial especializada na criação de planilhas personalizadas
+                    para atender às suas necessidades. Para gerar um resultado preciso e útil, preciso que você
+                    descreva claramente o que deseja. Informe quais dados devem estar na planilha, como eles
+                    devem ser organizados e se há cálculos, filtros ou formatações específicas. Lembre-se de
+                    que, apesar de minha capacidade, posso apresentar resultados inesperados ou cometer pequenos
+                    erros, então quanto mais detalhes você fornecer, melhor será o resultado. Caso algo não saia
+                    como esperado, podemos ajustar juntos para encontrar a solução ideal!
+                </span>
+            </div>
+            <div class="mb-4">
+                <input type="hidden" name="idioma_selecionado" id="idioma_selecionado" value="">
+                <input type="hidden" name="nome_da_planilha" id="nome_da_planilha" value="">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2 font-semibold">Descreva e estrutura da planilha que
+                    deseja criar</label>
+                <textarea name="user_input" required
+                    class="w-full px-3 py-5 h-40 border border-gray-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded-md focus:outline-none transition ease-in-out duration-300"
+                    placeholder="Exemplo: Uma planilha com colunas Nome, Nota1, Nota2 e Média (com fórmula) contendo 10 registros. Adicione filtros."
+                    onfocus="this.placeholder=''"
+                    onblur="this.placeholder='Exemplo: Uma planilha com colunas Nome, Nota1, Nota2 e Média (com fórmula) contendo 10 registros. Adicione filtros.'">{{ request.POST.user_input }}</textarea>
+            </div>
+            
+            <button type="submit"
+                class="text-white px-6 py-2 bg-emerald-500 rounded hover:bg-emerald-700 focus:outline-none">
+                ↻ Gerar Planilha
+            </button>
+                        
+        </form>
+        
+            <div class="mt-5">
+            {% if request.session.excel_file %}
+            <a href="{% url 'xlsmaker:download-spreadsheet' %}" id="botao_download"
+                class="bg-emerald-500 text-white px-6 py-2 rounded hover:bg-emerald-700 transition-colors">
+                
+                Baixar Planilha
+            </a>
+            <form method="post" action="{% url 'xlsmaker:generate-dashboard' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-800 transition-colors ml-2">
+                    📊 Gerar Dashboard
+                </button>
+            </form>
+            {% endif %}
+        </div> 
+        <!-- Pré-visualização mt-8 -->
+        {% if preview_data %}
+        <div class="mt-8 max-w-7xl mx-auto" id="preview">
+            <h3 class="text-lg font-semibold mb-4">Pré-visualização</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            {% for header in headers %}
+                            <th class="px-4 py-2 text-left border">{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in preview_data %}
+                        <tr>
+                            {% for value in row.values %}
+                            <td class="px-4 py-2 border">{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        <!-- Gráficos -->
+        {% if charts %}
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-4">📈 Gráficos Gerados</h3>
+            <div class="grid gap-4 md:grid-cols-2">
+                {% for val_col in charts.value_cols %}
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="h-48 flex items-center justify-center text-gray-400">
+                        Gráfico de {{ val_col }}
+                        <!-- Aqui você pode integrar uma biblioteca de gráficos -->
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+{% endblock content %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}ExpertAI{% endblock title %}
+{% block content %}
+
+ <main class="flex-1 p-8 bg-gray-100 min-h-screen overflow-x-auto mt-5">
+
+                                 
+      <div class="mb-4">                         
+        <div  class="overflow-x-auto my-6 bg-gray-50 px-8 py-8 shadow-xl rounded-sm ring-1 ring-gray-200">
+        <form class="space-y-6" action="{% url 'usuarios:criar_usuarios' %}" method="POST">
+              {% csrf_token %}
+          <div>
+            <label for="email" class="block text-sm/6 font-medium text-gray-900"
+              >Username</label
+            >
+            <div class="mt-2">           
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 focus:border-emerald-500 focus:ring-3 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o username" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o username'"
+              />
+            </div>
+          </div>
+
+           <div>
+            <label for="email" class="block text-sm/6 font-medium text-gray-900"
+              >Email</label
+            >
+            <div class="mt-2">           
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:border-emerald-500 focus:ring-3 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o email" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o email'"
+              />
+            </div>
+          </div>       
+
+          <div>
+               <label for="password" class="block text-sm/6 font-medium text-gray-900"
+              >Password</label
+            >
+                    
+            <div class="mt-2 relative">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300 pr-10"
+                placeholder="Digite o password"
+                onfocus="this.placeholder=''" onblur="this.placeholder='Digite o password'"
+              />
+              <button
+                type="button"
+                onclick="togglePassword()"
+                class="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-emerald-600"
+                tabindex="-1"
+              >
+                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+            <div>
+               <label for="confirma_password" class="block text-sm/6 font-medium text-gray-900"
+              >Confirma password</label
+            >
+                    
+            <div class="mt-2 relative">
+              <input
+                type="password"
+                id="confirma_password"
+                name="confirma_password"
+                required
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300 pr-10"
+                placeholder="Confirma o password"
+                onfocus="this.placeholder=''" onblur="this.placeholder='Confirma o password'"
+              />
+              <button
+                type="button"
+                onclick="toggleConfirmaPassword()"
+                class="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-emerald-600"
+                tabindex="-1"
+              >
+                <svg id="confirmaEyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div  class="flex justify-end">    
+            <button
+              type="reset"
+              class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none group flex items-center"
+            >
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M13 3a9 9 0 1 0 6.36 15.36l-1.41-1.41A7 7 0 1 1 13 5v4l5-5-5-5v4z"/>
+            </svg>
+              Reset
+            </button>&nbsp;        
+            <button
+              type="submit"
+              class="px-4 py-2 text-white bg-emerald-500 rounded hover:bg-emerald-700 focus:outline-none group flex items-center"
+            >
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M3 3v18h18V7.83L16.17 3H3zm16 16H5V5h10v4h4v10zm-6-7h-4v6h4v-6zm-2-7c-.83 0-1.5.67-1.5 1.5S10.17 7 11 7s1.5-.67 1.5-1.5S11.83 3 11 3z"/>
+            </svg>
+              Save
+            </button>
+          </div>
+        </form>
+         </div>
+      
+                
+    </div>               
+            
+</main>
+
+{% endblock content %}

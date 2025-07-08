@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}ExpertAI{% endblock title %}
+{% block content %}
+
+ <main class="flex-1 p-8 bg-gray-100 min-h-screen overflow-x-auto mt-5">
+    <div class="bg-gray-50 p-6 shadow rounded-md mb-6 mt-5">         
+                                 
+      <div class="mb-4">                         
+        <div class="overflow-x-auto my-6">
+        <form class="space-y-6" method="POST">
+              {% csrf_token %}
+          <div>
+            <label for="tokens_actuais" class="block text-sm/6 font-medium text-gray-900"
+              >Usuário</label
+            >
+            <div class="mt-2">           
+              <input
+                type="text"
+                id="usuario"
+                name="usuario"
+                value="{{ profile.user.username }}"
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:border-emerald-500 focus:ring-3 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                disabled
+              />
+          </div>
+          </div>
+          <div>
+            <label for="tokens_actuais" class="block text-sm/6 font-medium text-gray-900"
+              >Tokens actuais atribuidos</label
+            >
+            <div class="mt-2">           
+              <input
+                type="text"
+                id="tokens_actuais"
+                name="tokens_actuais"
+                value="{{ profile.tokens_atribuidos }}"
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:border-emerald-500 focus:ring-3 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                readonly
+              />
+            </div>
+          </div>
+
+           <div>
+            <label for="nova" class="block text-sm/6 font-medium text-gray-900"
+              >Nova atribuição</label
+            >
+            <div class="mt-2">           
+              <input
+                type="number"
+                id="nova_atribuicao"
+                name="nova_atribuicao"
+                required               
+                class="w-full bg-gray-50 px-3 py-2 border border-gray-300 focus:border-emerald-500 focus:ring-3 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o novo valor" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o novo valor'"
+              />
+            </div>
+          </div>     
+
+          <div  class="flex justify-end">    
+            <a href="{% url 'usuarios:listar_tokens' %}"
+              type="button"
+              class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none group flex items-center"
+            >
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+
+              Voltar
+            </a>&nbsp;        
+            <button
+              type="submit"
+              class="px-4 py-2 text-white bg-emerald-500 rounded hover:bg-emerald-700 focus:outline-none group flex items-center"
+            >
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M3 3v18h18V7.83L16.17 3H3zm16 16H5V5h10v4h4v10zm-6-7h-4v6h4v-6zm-2-7c-.83 0-1.5.67-1.5 1.5S10.17 7 11 7s1.5-.67 1.5-1.5S11.83 3 11 3z"/>
+            </svg>
+              Save
+            </button>
+          </div>
+        </form>
+         </div>
+        </div>
+                
+    </div>               
+            
+</main>
+
+{% endblock content %}

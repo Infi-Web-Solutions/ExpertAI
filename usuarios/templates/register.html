@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-full">
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          class="mx-auto h-10 w-auto"
+          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600"
+          alt="Your Company"
+        />
+        <h2
+          class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+        >
+          Cria a sua conta
+        </h2>
+      </div>
+
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form class="space-y-6" action="{% url 'usuarios:register' %}" method="POST">
+              {% csrf_token %}
+          <div>
+            <label for="email" class="block text-sm/6 font-medium text-gray-900"
+              >Username</label
+            >
+            <div class="mt-2">           
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                class="w-full px-3 py-2 border border-gray-300 focus:border-emerald-100 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o username" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o username'"
+              />
+            </div>
+          </div>
+
+           <div>
+            <label for="email" class="block text-sm/6 font-medium text-gray-900"
+              >Email</label
+            >
+            <div class="mt-2">           
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-3 py-2 border border-gray-300 focus:border-emerald-100 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o email" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o email'"
+              />
+            </div>
+          </div>       
+
+          <div>
+               <label for="password" class="block text-sm/6 font-medium text-gray-900"
+              >Password</label
+            >
+            <div class="mt-2">
+           
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                class="w-full px-3 py-2 border border-gray-300 focus:border-emerald-100 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Digite o password" onfocus="this.placeholder=''" onblur="this.placeholder='Digite o password'"
+              />
+            </div>
+          </div>
+
+            <div>
+               <label for="confirma_password" class="block text-sm/6 font-medium text-gray-900"
+              >Confirma password</label
+            >
+            <div class="mt-2">
+           
+              <input
+                type="password"
+                id="confirma_password"
+                name="confirma_password"
+                required
+                class="w-full px-3 py-2 border border-gray-300 focus:border-emerald-100 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                placeholder="Confirma o password" onfocus="this.placeholder=''" onblur="this.placeholder='Confirma o password'"
+              />
+            </div>
+          </div>
+
+          <div>            
+            <button
+              type="submit"
+              class="w-full px-4 py-2 text-white bg-emerald-500 rounded hover:bg-emerald-700 focus:outline-none"
+            >
+              Criar conta
+            </button>
+          </div>
+        </form>
+
+        <p class="mt-10 text-center text-sm/6 text-gray-500">
+          Já possui conta?
+          <a
+            href="{% url 'usuarios:user_login' %}"
+            class="font-semibold text-emerald-600 hover:text-emerald-500"
+            >Faça login na sua conta aqui</a
+          >
+        </p>
+          <!-- Mensagens -->
+        {% if messages %}
+        <div class="fixed top-4 right-4 space-y-2 z-50">
+            {% for message in messages %}
+            <div id="message-{{ forloop.counter }}" 
+                class="relative {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} px-4 py-3 rounded-lg shadow-lg transition-opacity duration-300"
+                x-data="{ show: true }"
+                x-show="show"
+                x-init="setTimeout(() => show = false, 5000)"
+               >
+                
+                <!-- Mensagem-->
+                <span>{{ message }}</span>
+              
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </body>
+</html>

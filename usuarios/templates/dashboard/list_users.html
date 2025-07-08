@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}ExpertAI{% endblock title %}
+{% block content %}
+
+ <main class="flex-1 p-8 bg-gray-100 min-h-screen overflow-x-auto mt-5">
+    <div class="container mx-auto p-6">
+    {% comment %} <div class="bg-gray-50 p-6 shadow rounded-md mb-6 mt-5">         {% endcomment %}
+                             
+      <div class="mb-4">                         
+        <div class="overflow-x-auto rounded-lg shadow-md border border-gray-300 my-6">
+             <h1 class="font-normal my-4 ml-2 group flex items-center text-sm">
+                 <svg class="w-4 h-4 mr-2 text-gray-700 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                Lista de Usuários
+             </h1>    
+             <input
+                type="text"
+                id="searchInput"
+                placeholder="Buscar por nome ou email"
+                 class="ml-2 mb-3 w-1/4 bg-gray-50 px-3 py-2 border border-gray-300 focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300"
+                />
+
+            <table class="w-full">
+                <thead class="bg-emerald-500 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">Username</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider ">Status da conta</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider "></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for usuario in usuarios %}
+                    <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ usuario.username }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ usuario.email }}</td>                       
+                        <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-left">
+                            <select onchange="updateUserStatus({{ usuario.id }}, this.value)" class="px-3 py-2 border border-gray-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300">
+                                <option value="1" {% if usuario.is_active %}selected{% endif %}>Ativo</option>
+                                <option value="0" {% if not usuario.is_active %}selected{% endif %}>Inativo</option>
+                            </select>
+                        </td>
+                          <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-right">
+                            <select onchange="handleUserAction({{ usuario.id }}, this.value)" class="px-3 py-2 border border-gray-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300">
+                                <option value="">Seleciona uma ação</option>
+                                 <option value="{% url 'usuarios:editar_usuario' usuario.id %}">Editar</option>
+                                 <option value="{% url 'usuarios:deletar_usuario' usuario.id %}">Excluir</option>
+                            </select>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="py-2 px-4 border text-center">Nenhum usuário cadastrado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             <div class="my-4 mx-2 flex justify-between items-center">
+                    <span class="text-gray-600 text-sm">
+                        Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}
+                    </span>
+
+                    <div class="flex space-x-2">
+                        {% if usuarios.has_previous %}
+                            <a href="?page=1" class="px-3 py-1 bg-gray-200 rounded">⏮️ Primeira</a>
+                            <a href="?page={{ usuarios.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded">⬅️ Anterior</a>
+                        {% endif %}
+
+                        {% if usuarios.has_next %}
+                            <a href="?page={{ usuarios.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded">Próxima ➡️</a>
+                            <a href="?page={{ usuarios.paginator.num_pages }}" class="px-3 py-1 bg-gray-200 rounded">Última ⏭️</a>
+                        {% endif %}
+                    </div>
+                </div>
+         </div>
+        </div>
+                
+    </div>               
+ {% comment %} </div>        {% endcomment %}
+</main>
+
+{% endblock content %}

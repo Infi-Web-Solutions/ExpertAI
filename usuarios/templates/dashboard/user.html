@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3>Painel do usuário</h3>
+    <p>Bem-vindo, {{ user.username }}!</p>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>
+      Tipo: {% if user.is_staff or user.is_superuser %}Admin{% else %}Usuário
+      Normal{% endif %}
+    </p>
+  </body>
+</html>

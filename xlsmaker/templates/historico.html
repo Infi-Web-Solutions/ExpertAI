@@ -1,0 +1,100 @@
+{% extends "main.html" %}
+{% block title %}ExpertAi{% endblock title %}
+{% block content %}
+<main class="flex-1 p-8 bg-gray-50 min-h-screen overflow-x-auto">  
+ <div class="container mx-auto p-6">
+  <div class="bg-white p-6 shadow rounded-md mb-6 mt-5">      
+                              
+      <div class="mb-4"> 
+        <div class="flex justify-start">
+            <a href="{% url 'xlsmaker:dashboard' %}" class="my-1 mx-1 text-center text-white bg-emerald-500 font-medium pl-2 pr-3 py-2 rounded rounded-md border border-none hover:bg-emerald-700 flex items-center">
+                <svg class="back-button" width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 13L16 20L23 27" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </a>
+        </div>                        
+      
+        <div id="copyToast" class="hidden fixed top-5 right-5 p-3 bg-emerald-500 text-white rounded-lg shadow-lg transition-opacity duration-300"></div>
+         <div class="overflow-x-auto rounded-lg shadow-md border border-gray-100 my-6">
+                <h1 class="text-xl font-normal my-4 ml-2 group flex items-center text-sm">
+                    <svg class="w-4 h-4 mr-2 text-gray-700 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    Meu histórico
+                </h1> 
+                <table class="w-full">
+                    <thead class="bg-emerald-500">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Data e hora do pedido</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Descrição</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Copiar</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    {% for solicitacao in solicitacoes %}
+                        <tr data-desc="{{ solicitacao.descricao }}" class="hover:bg-gray-50 transition-colors even:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 solicitante">
+                           {{ solicitacao.created_at }}
+                        </td>
+                      
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 max-w-xs descricao">
+                            <div class="line-clamp-2">
+                             {{ solicitacao.descricao}}
+                             
+                            </div>
+                        </td>                      
+                        <td class="py-4 px-6 border-b">
+                            <button  onclick="showDetails(this)" class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                            </button>
+                            <button onclick="copyDescription(this)" 
+                                    class="p-2 hover:bg-emerald-100 rounded-full transition-colors"
+                                    title="Copiar descrição completa">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                     </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                        <td colspan="4" class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-500 text-sm">
+                            Nenhuma solicitação encontrada
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- 🔽 PAGINAÇÃO (Fora da tabela) 🔽 -->
+                <div class="my-4 mx-2 flex justify-between items-center">
+                    <span class="text-gray-600 text-sm">
+                        Página {{ solicitacoes.number }} de {{ solicitacoes.paginator.num_pages }}
+                    </span>
+
+                    <div class="flex space-x-2">
+                        {% if solicitacoes.has_previous %}
+                            <a href="?page=1" class="px-3 py-1 bg-gray-200 rounded">⏮️ Primeira</a>
+                            <a href="?page={{ solicitacoes.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded">⬅️ Anterior</a>
+                        {% endif %}
+
+                        {% if solicitacoes.has_next %}
+                            <a href="?page={{ solicitacoes.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded">Próxima ➡️</a>
+                            <a href="?page={{ solicitacoes.paginator.num_pages }}" class="px-3 py-1 bg-gray-200 rounded">Última ⏭️</a>
+                        {% endif %}
+                    </div>
+                </div>
+                </div>           
+         </div>
+                
+    </div>          
+ </div>
+ </main>
+
+{% endblock content %}

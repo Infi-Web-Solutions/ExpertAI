@@ -1,0 +1,28 @@
+<tbody class="bg-white divide-y divide-gray-200">
+    {% for profile in user_profile %}
+    <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors">
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ profile.user.username}}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ profile.user.email }}</td>  
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ profile.tokens_atribuidos }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ profile.tokens_gastos }}</td> 
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ profile.saldo_tokens }}</td>                                       
+        <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-left">
+            <select onchange="resetTokens({{ profile.id }}, this.value)" class="px-3 py-2 border border-gray-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300">
+                <option value="">Seleciona</option>
+                <option value="0">Reset</option>
+            </select>
+        </td>
+        <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-500 text-right">
+            <select onchange="handleTokensAction({{ profile.id }}, this.value)" class="px-3 py-2 border border-gray-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-800 focus:ring-opacity-20 placeholder:text-gray-600 text-gray-800 rounded focus:outline-none transition ease-in-out duration-300">
+                <option value="">Seleciona uma ação</option>
+                 <option value="{% url 'usuarios:editar_tokens' profile.id %}">Reatribuir</option>
+                 <option value="{% url 'usuarios:deletar_tokens' profile.id %}">Excluir</option>
+            </select>
+        </td> 
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4" class="py-2 px-4 border text-center">Nenhum usuário cadastrado</td>
+    </tr>
+    {% endfor %}
+</tbody>
